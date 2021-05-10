@@ -1,25 +1,39 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const routes = require('./route');
+
+
+// Inti App
 const app = express();
 
+// Body-parser
 app.use(bodyParser.json());
 
-//Routes
-app.use('/bonds', require('./routes/bonds'));
-app.use('/users', require('./routes/users'));
+// Routes
+app.use('/', routes);
 
-app.get('/',(req, res)=>{
-    res.send('We are home');
-});
+// Port
+const port = 3000;
 
-mongoose.connect('mongodb://localhost:27017/', { useNewUrlParser: true }, () =>{
+
+mongoose.connect('mongodb://localhost:27017/weather-db', { useNewUrlParser: true }, () =>{
     console.log('connected to DBBBB!!');
-})
+});
 
 // mongoose.connect('mongodb+srv://testuser:testpassword@cluster0.kpfbg.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', { useNewUrlParser: true }, () => {
 //         console.log('connected to DBBBB!!');
 //     } )
 
 //listen to server
-app.listen(3000);
+
+app.on('listening',function(){
+    console.log('ok, server is running');
+});
+
+app.listen(3001);
+
+// app.listen(port, function() {
+//     console.log('Server started on port '+ port);
+// });
+
