@@ -87,7 +87,9 @@ External Apis
 
 ###Test
 
-run
 ```shell script
 npm test
 ```
+
+#### For Task 1 
+go to file : task-1.md in main directory
