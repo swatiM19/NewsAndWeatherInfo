@@ -13,9 +13,6 @@ app.use(bodyParser.json());
 // Routes
 app.use('/', routes);
 
-// Port
-const port = 3000;
-
 
 mongoose.connect('mongodb://localhost:27017/weather-db', { useNewUrlParser: true }, () =>{
     console.log('connected to DBBBB!!');
@@ -26,14 +23,9 @@ mongoose.connect('mongodb://localhost:27017/weather-db', { useNewUrlParser: true
 //     } )
 
 //listen to server
-
 app.on('listening',function(){
     console.log('ok, server is running');
 });
+app.listen(3000);
 
-app.listen(3001);
-
-// app.listen(port, function() {
-//     console.log('Server started on port '+ port);
-// });
 

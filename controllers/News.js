@@ -1,6 +1,6 @@
-const axios = require('axios');
 const NewsAPI = require('newsapi');
 const _ = require('lodash');
+const request = require('request');
 
 const client = require('../redis');
 const secret = require('../secrets');
@@ -11,13 +11,9 @@ let ctrl = {
     topHeadlines: async function(req, res){
         try {
             newsapi.v2.topHeadlines({
-                sources: 'bbc-news,the-verge',
-                q: 'bitcoin',
-                category: 'business',
                 language: 'en',
-                country: 'us'
             }).then(response => {
-                res.json({ status:'OK', data: response });
+                return res.status(200).json({ result: 'success', data:response });
             });
         } catch (error){
             res.json({message: error});
@@ -32,23 +28,57 @@ let ctrl = {
             newsapi.v2.everything({
                 q: search ,
             }).then(response => {
+                if (_.isEmpty(response)) {
+                    return res.status(200).json({ result: 'success', data: {} , message: 'No data'});
+                }
                 // add data to Redis
                 client.setex(search, 3600, JSON.stringify(response));
-                res.json({ status:'OK', data: response });
+                let newsData = {
+                    count:'',
+                    data: [],
+                };
+                newsData.count = response.totalResults;
+                newsData.data.push( response.articles.map(val =>
+                    ({ 'headline': val.title,
+                        'link': val.url,
+                        'author': val.author,
+                        'description': val.description,
+                        'publishedAt': val.publishedAt,
+                    })));
+                return res.status(200).json({ result: 'success', data:newsData });
             });
         } catch (error) {
             res.json({message: error});
         }
     },
     getWeatherInfo: async function(req,res) {
-        // waiting for API to activate
         try {
             let apiKey = secret.weatherapi;
             let city = req.body.city || 'bengaluru';
-            let url = `http://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=${apiKey}`;
-            const weatherAPI = await axios.get(url);
-            console.log('weatherAPI', weatherAPI);
-            res.json({data:weatherAPI});
+            let url = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&cnt=5`;
+            request(url, function (err, response, body) {
+                if(err){
+                    console.log('error:', err);
+                } else {
+                    if (_.isEmpty(body)) {
+                        return res.status(200).json({ result: 'success', data: {} , message: 'No data'});
+                    }
+                    let resultData = JSON.parse(body);
+                    let obj = {
+                        count: resultData.cnt,
+                        unit: 'metric',
+                        location: city,
+                        data: []
+                    };
+                    obj.data.push( resultData.list.map(val =>
+                        ({ 'date': val.dt_txt,
+                            'main': val.weather[0].main,
+                            'temp': val.main.temp,
+                        })));
+                    return res.status(200).json({ result: 'success', data:obj });
+                }
+            });
+
         } catch (error) {
             console.log('error:', error);
         }

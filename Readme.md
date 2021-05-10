@@ -55,6 +55,11 @@ Redis server is ready.
 
 ```
 
+
+###POSTMAN
+You can use below link to access api documentation and example.
+https://documenter.getpostman.com/view/9681111/TzRSgnXn
+
 ### Technologies Used
 Core :
 * Nodejs
@@ -67,6 +72,7 @@ Tool:
 
 Caching: 
 * redis
+( caching is done only for search news API as a sample. Can be implemented for other APIs also.)
 
 Authentication: 
 * bcryptjs
@@ -74,8 +80,14 @@ Authentication:
 
 Testing:
 * mocha 
-* chai
 
 External Apis
 * newsapi (client library)
 * openweathermap 
+
+###Test
+
+run
+```shell script
+npm test
+```
