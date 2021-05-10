@@ -13,7 +13,7 @@ Involves a news application which fetches news articles, and a weather API which
 ## Steps to set up and Run the Application
 
 ### Installation and Running
-1. You need to have **node.js** and **npm** installed on your machine. Once installed, you can check the versions using the below commands
+1. You need to have **node.js** , **npm** and **mongodb** installed on your machine. Once installed, you can check the versions using the below commands
 
 ```sh
 node -v // using v10.10.0
