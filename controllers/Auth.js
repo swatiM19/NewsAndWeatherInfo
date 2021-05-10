@@ -30,7 +30,7 @@ let ctrl = {
                 return res.json({status: 'error', message: 'Email already exists.'});
             }
         }
-        res.json({ status: 'OK'});
+        return res.status(201).json({ status: 'OK' });
     },
     login: async function (req, res) {
         const { email, password } = req.body;
@@ -41,7 +41,7 @@ let ctrl = {
         if ( await bcrypt.compare(password, user.password)) {
             const token = jwt.sign({ id: user._id, email: user.email}, keys.secretkey);
             console.log('token', token);
-            return res.json({ status: 'login successful', data: token});
+            return res.status(200).json({ status: 'login successful', token: token});
         }
         res.json({ status: 'error', error: 'Invalid username/password' });
     },
