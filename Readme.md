@@ -24,17 +24,17 @@ npm -v
 2. Clone the project from GitHub Repository and Install all the necessary packages
 
 ```sh
-git clone https://github.com/imar26/react-nodejs-newsapi.git
-cd NewsApp
+git clone https://github.com/swatiM19/NewsAndWeatherInfo.git
+cd NewsAndWeatherInfo
 npm install
 ```
 
-2. Start node.js server
+3. Start node.js server
 
 ```sh
 nodemon app.js
 ```
-3. Setup Redis for caching
+4. Setup Redis for caching
 
 ```sh
   $ curl -O http://download.redis.io/redis-stable.tar.gz
@@ -55,3 +55,27 @@ Redis server is ready.
 
 ```
 
+### Technologies Used
+Core :
+* Nodejs
+* Express
+* Mongodb
+* mongoose
+
+Tool: 
+* eslint
+
+Caching: 
+* redis
+
+Authentication: 
+* bcryptjs
+* jsonwebtoken
+
+Testing:
+* mocha 
+* chai
+
+External Apis
+* newsapi (client library)
+* openweathermap 
